@@ -1,9 +1,9 @@
-var forEach  =  function(point){
+function forEach(arry, callbackFunc){
     
    var points = document.getElementsByClassName('point');
     
       for(var i = 0; i< points.length; i++){
-          forEach(points[i]);
+          callbackFunc(arry[i]);
           
       }
   
