@@ -24,13 +24,9 @@ body {
 .navbar {
     position: relative;
     padding: 0.5rem;
-<<<<<<< HEAD
     background-color: rgb(101,18,95,0.5);
      /* #2 */
      z-index: 1;
-=======
-    background-color: rgb(101, 18, 95);
->>>>>>> checkpoint4-assignment
 }
 
 .navbar .logo {
@@ -122,13 +118,11 @@ body {
     max-width: 64rem;
 }
 
-<<<<<<< HEAD
+
  .container.narrow {
      max-width: 56rem;
  }
-=======
 
->>>>>>> checkpoint4-assignment
 /* Medium screens (640px) */
 
 @media (min-width: 640px) {
