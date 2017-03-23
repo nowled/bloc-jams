@@ -123,6 +123,11 @@ var setCurrentAlbum = function (album) {
     }
 };
 
+    var findParentByClassName function(parent){
+        for(var i = 0)
+        
+    }
+
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
 
