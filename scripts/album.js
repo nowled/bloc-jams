@@ -123,10 +123,33 @@ var setCurrentAlbum = function (album) {
     }
 };
 
-    var findParentByClassName function(parent){
-        for(var i = 0)
-        
+   /**
+ * We need to find the parent element
+ * of a specified className--- and we will pass it a  specific classname
+ * 
+ */
+var findParentByClassName = function(element, targetClass) {
+    //if this is true!  Meaning an element,  do following
+    if (element) {
+        /**
+         * our currentParent variable will be used to hold the elements's parent
+         * that we passed
+         */
+        var currentParent = element.parentElement;
+        /** We want to change the innerHtml of some Parent element
+         * with the song-item number class
+        not the parent or child of the song-item-number element itself because we are not trying to change the number or innerHtml
+         of the song-item-number,title, or duration/ but we need to change either the pause button, rollover etc.., */
+        while (currentParent.className !== targetClass && currentParent.className !== null) {
+            /**Okay we found a match
+             * of the Parent element of given class name so we will assign it to
+             * our currentParent object and exit the WHILE LOOP
+             */
+            currentParent = currentParent.parentElement;
+        }
+        return currentParent;
     }
+};
 
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
