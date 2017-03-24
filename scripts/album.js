@@ -91,9 +91,7 @@ var albumCherrryBlossoms = {
 
 var createSongRow = function (songNumber, songName, songLength) {
     var template =
-        '<tr class="album-view-song-item">' 
-            + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' 
-        + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
+        '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
 
     return template;
 };
@@ -123,14 +121,18 @@ var setCurrentAlbum = function (album) {
     }
 };
 
-   /**
+/**
  * We need to find the parent element
  * of a specified className--- and we will pass it a  specific classname
  * 
  */
-var findParentByClassName = function(element, targetClass) {
+var findParentByClassName = function (element, targetClass) {
     //if this is true!  Meaning an element,  do following
-    if (element) {
+    if (!element.parentElement) {
+        console.log("No Parent found");
+    } else if (!element.parentElement.targetClass) {
+        console.log("No parent found with that class name");
+    } else{
         /**
          * our currentParent variable will be used to hold the elements's parent
          * that we passed
@@ -150,13 +152,53 @@ var findParentByClassName = function(element, targetClass) {
         return currentParent;
     }
 };
+var getSongItem = function (element) {
+    switch (element.className) {
+    case 'album-song-button':
+    case 'ion-play':
+    case 'ion-pause':
+        return findParentByClassName(element, 'song-item-number');
+    case 'album-view-song-item':
+        return element.querySelector('.song-item-number');
+    case 'song-item-title':
+    case 'song-item-duration':
+        return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+    case 'song-item-number':
+        return element;
+    default:
+        return;
+    }
+};
+var clickHandler = function (targetElement) {
+    var songItem = getSongItem(targetElement);
+    if (currentlyPlayingSong === null) {
+        songItem.innerHTML = pauseButtonTemplate;
+        //why get attribute and how do you make attribute
+        currentlyPlayingSong = songItem.getAttribute('data-song-number');
+    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
+        songItem.innerHTML = playButtonTemplate;
+        currentlyPlayingSong = null;
 
+        //If the current playing song is not the song playing
+    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
+        var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
+        currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
+        songItem.innerHTML = pauseButtonTemplate;
+        currentlyPlayingSong = songItem.getAttribute('data-song-number');
+    }
+
+};
+// Elements to which we'll be adding listeners
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 var songRows = document.getElementsByClassName('album-view-song-item');
 
 
- // Album button templates
- var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+// Album button templates
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+
+// Store state of playing songs
+var currentlyPlayingSong = null;
 
 
 window.onload = function () {
@@ -165,17 +207,32 @@ window.onload = function () {
     songListContainer.addEventListener('mouseover', function (event) {
 
         // Only target individual song rows during event delegation
-         if (event.target.parentElement.className === 'album-view-song-item') {
-               event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
-         }
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+            var songItem = getSongItem(event.target);
+
+            if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+                songItem.innerHTML = playButtonTemplate;
+            }
+
+        }
     });
-    
-      for (var i = 0; i < songRows.length; i++) {
-         songRows[i].addEventListener('mouseleave', function(event) {
-              // Selects first child element, which is the song-item-number element
-             this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
-         });
-     }
+
+    for (var i = 0; i < songRows.length; i++) {
+        songRows[i].addEventListener('mouseleave', function (event) {
+            // Selects first child element, which is the song-item-number element
+            var songItem = getSongItem(event.target);
+            var songItemNumber = songItem.getAttribute('data-song-number');
+            if (songItemNumber !== currentlyPlayingSong) {
+                songItem.innerHTML = songItemNumber;
+            }
+        });
+        songRows[i].addEventListener('click', function (event) {
+            // Event handler call
+            clickHandler(event.target);
+            // Store state of playing songs line 180
+        });
+    }
 
     var albums = [albumPicasso, albumMarconi, albumCherrryBlossoms];
     var index = 1;
