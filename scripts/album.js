@@ -211,6 +211,7 @@ window.onload = function () {
             // Event handler call
             clickHandler(event.target);
             // Store state of playing songs line 180
+             currentlyPlayingSong = null;
         });
     }
 
