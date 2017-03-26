@@ -90,7 +90,9 @@ var albumCherrryBlossoms = {
 };
 
 var createSongRow = function (songNumber, songName, songLength) {
-    var template =
+    var template =                    /** this is how you create an attribute data attribut
+                                      so could access it without css or just privately to   
+                                      to store things */
         '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
 
     return template;
@@ -127,12 +129,8 @@ var setCurrentAlbum = function (album) {
  * 
  */
 var findParentByClassName = function (element, targetClass) {
-    //if this is true!  Meaning an element,  do following
-    if (!element.parentElement) {
-        console.log("No Parent found");
-    } else if (!element.parentElement.targetClass) {
-        console.log("No parent found with that class name");
-    } else{
+    //if this is true!  Meaning an element,do the following      
+  
         /**
          * our currentParent variable will be used to hold the elements's parent
          * that we passed
@@ -150,8 +148,8 @@ var findParentByClassName = function (element, targetClass) {
             currentParent = currentParent.parentElement;
         }
         return currentParent;
-    }
-};
+    };
+
 var getSongItem = function (element) {
     switch (element.className) {
     case 'album-song-button':
