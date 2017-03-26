@@ -90,9 +90,10 @@ var albumCherrryBlossoms = {
 };
 
 var createSongRow = function (songNumber, songName, songLength) {
-    var template =                    /** this is how you create an attribute data attribut
-                                      so could access it without css or just privately to   
-                                      to store things */
+    var template =
+        /** this is how you create an attribute data attribut
+                          so could access it without css or just privately to   
+                          to store things */
         '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
 
     return template;
@@ -129,26 +130,48 @@ var setCurrentAlbum = function (album) {
  * 
  */
 var findParentByClassName = function (element, targetClass) {
-    //if this is true!  Meaning an element,do the following      
-  
-        /**
-         * our currentParent variable will be used to hold the elements's parent
-         * that we passed
+    /** 
+    Sets CheckParent variable and checks to see if a parent exists
+    **/
+    var checkParent = element.parentElement;
+
+    if (!checkParent) {
+        //if not we will stop execution and return
+        return console.log("No parent found");
+
+    }
+    var checkClass = element.parentElement.className;
+    /** 
+    Sets CheckClass variable and checks to see if a parent with the className exists
+    **/
+    if (!checkClass) {
+        //if no parent with that specified class name found stop execution and return
+        return console.log("No parent found with that class name");
+    }
+
+    //If all of that checks out we will pass through to this.
+
+    var currentParent = element.parentElement;
+
+    /**
+     * our currentParent variable will be used to hold the elements's parent
+     * that we passed
+     */
+
+    /** We want to change the innerHtml of some Parent element
+     * with the song-item number class
+    not the parent or child of the song-item-number element itself because we are not trying to change the number or innerHtml
+     of the song-item-number,title, or duration/ but we need to change either the pause button, rollover etc.., */
+    while (currentParent.className !== targetClass && currentParent.className !== null) {
+        /**Okay we found a match
+         * of the Parent element of given class name so we will assign it to
+         * our currentParent object and exit the WHILE LOOP
          */
-        var currentParent = element.parentElement;
-        /** We want to change the innerHtml of some Parent element
-         * with the song-item number class
-        not the parent or child of the song-item-number element itself because we are not trying to change the number or innerHtml
-         of the song-item-number,title, or duration/ but we need to change either the pause button, rollover etc.., */
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-            /**Okay we found a match
-             * of the Parent element of given class name so we will assign it to
-             * our currentParent object and exit the WHILE LOOP
-             */
-            currentParent = currentParent.parentElement;
-        }
-        return currentParent;
-    };
+        currentParent = currentParent.parentElement;
+    }
+    return currentParent;
+
+};
 
 var getSongItem = function (element) {
     switch (element.className) {
