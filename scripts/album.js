@@ -126,61 +126,42 @@ var setCurrentAlbum = function (album) {
  * of a specified className--- and we will pass it a  specific classname
  * 
  */
-var findParentByClassName = function (element, targetClass) {
-    //if this is true!  Meaning a parent element,  do following
-    if (!element.parentElement) {
-       return console.log("No Parent found");
-    } else if (!element.parentElement.className) {
-      return  console.log("No parent found with that class name");
-    } else{
-        /**
-         * our currentParent variable will be used to hold the elements's parent
-         * that we passed
-         */
+var findParentByClassName = function(element, targetClass) {
+    if (element) {
         var currentParent = element.parentElement;
-        /** We want to change the innerHtml of some Parent element
-         * with the song-item number class
-        not the parent or child of the song-item-number element itself because we are not trying to change the number or innerHtml
-         of the song-item-number,title, or duration/ but we need to change either the pause button, rollover etc.., */
         while (currentParent.className !== targetClass && currentParent.className !== null) {
-            /**Okay we found a match
-             * of the Parent element of given class name so we will assign it to
-             * our currentParent object and exit the WHILE LOOP
-             */
             currentParent = currentParent.parentElement;
         }
         return currentParent;
     }
 };
-var getSongItem = function (element) {
+var getSongItem = function(element) {
     switch (element.className) {
-    case 'album-song-button':
-    case 'ion-play':
-    case 'ion-pause':
-        return findParentByClassName(element, 'song-item-number');
-    case 'album-view-song-item':
-        return element.querySelector('.song-item-number');
-    case 'song-item-title':
-    case 'song-item-duration':
-        return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
-    case 'song-item-number':
-        return element;
-    default:
-        return;
-    }
+        case 'album-song-button':
+        case 'ion-play':
+        case 'ion-pause':
+            return findParentByClassName(element, 'song-item-number');
+        case 'album-view-song-item':
+            return element.querySelector('.song-item-number');
+        case 'song-item-title':
+        case 'song-item-duration':
+            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+        case 'song-item-number':
+            return element;
+        default:
+            return;
+    }  
 };
 var clickHandler = function (targetElement) {
     var songItem = getSongItem(targetElement);
     if (currentlyPlayingSong === null) {
         songItem.innerHTML = pauseButtonTemplate;
-        //why get attribute and how do you make attribute
         currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
-        songItem.innerHTML = playButtonTemplate;
-        currentlyPlayingSong = null;
-
-        //If the current playing song is not the song playing
-    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
+   } else if(currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
+         songItem.innerHTML = playButtonTemplate;
+         currentlyPlayingSong = null;
+     //If the current playing song is not the song playing
+ } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
         var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
         currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
         songItem.innerHTML = pauseButtonTemplate;
@@ -207,16 +188,15 @@ window.onload = function () {
     songListContainer.addEventListener('mouseover', function (event) {
 
         // Only target individual song rows during event delegation
-        if (event.target.parentElement.className === 'album-view-song-item') {
-            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+         if (event.target.parentElement.className === 'album-view-song-item') {
+            event.target.parentElement.querySelector('.song-item-number').innerHTML =                            playButtonTemplate;
             var songItem = getSongItem(event.target);
 
             if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
                 songItem.innerHTML = playButtonTemplate;
             }
-
-        }
-    });
+    }
+});
 
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function (event) {
