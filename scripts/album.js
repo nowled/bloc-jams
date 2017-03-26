@@ -207,13 +207,15 @@ window.onload = function () {
                 songItem.innerHTML = songItemNumber;
             }
         });
+    
         songRows[i].addEventListener('click', function (event) {
             // Event handler call
-            clickHandler(event.target);
+          clickHandler(event.target);
             // Store state of playing songs line 180
+          currentlyPlayingSong = null;
         });
+    
     }
-
     var albums = [albumPicasso, albumMarconi, albumCherrryBlossoms];
     var index = 1;
 
