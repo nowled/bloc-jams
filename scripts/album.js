@@ -91,6 +91,9 @@ var albumCherrryBlossoms = {
 
 var createSongRow = function (songNumber, songName, songLength) {
     var template =
+        /** this is how you create an attribute data attribut
+                          so could access it without css or just privately to   
+                          to store things */
         '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
 
     return template;
@@ -126,42 +129,74 @@ var setCurrentAlbum = function (album) {
  * of a specified className--- and we will pass it a  specific classname
  * 
  */
-var findParentByClassName = function(element, targetClass) {
+var findParentByClassName = function (element, targetClass) {
+    /** 
+    Sets CheckParent variable and checks to see if a parent exists
+    **/
+    var checkParentPass = element.parentElement;
+    if (!checkParentPass) {
+        //if not we will stop execution and return
+        return console.log("No parent found");
+
+    }
+    var checkClassPass = element.parentElement.className;
+    /** 
+    Sets CheckClass variable and checks to see if a parent with the className exists
+    **/
+    if (!checkClassPass) {
+        //if no parent with that specified class name found stop execution and return
+        return console.log("No parent found with that class name");
+    }
+
+    //If all of that checks out we will pass through to this.
+
     if (element) {
         var currentParent = element.parentElement;
+
+        /** We want to change the innerHtml of some Parent element
+         * with the song-item number class
+        not the parent or child of the song-item-number element itself because we are not trying to change the number or innerHtml
+         of the song-item-number,title, or duration/ but we need to change either the pause button, rollover etc.., */
         while (currentParent.className !== targetClass && currentParent.className !== null) {
+            /**Okay we found a match
+             * of the Parent element of given class name so we will assign it to
+             * our currentParent object and exit the WHILE LOOP
+             */
             currentParent = currentParent.parentElement;
+
         }
         return currentParent;
     }
 };
-var getSongItem = function(element) {
+
+
+var getSongItem = function (element) {
     switch (element.className) {
-        case 'album-song-button':
-        case 'ion-play':
-        case 'ion-pause':
-            return findParentByClassName(element, 'song-item-number');
-        case 'album-view-song-item':
-            return element.querySelector('.song-item-number');
-        case 'song-item-title':
-        case 'song-item-duration':
-            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
-        case 'song-item-number':
-            return element;
-        default:
-            return;
-    }  
+    case 'album-song-button':
+    case 'ion-play':
+    case 'ion-pause':
+        return findParentByClassName(element, 'song-item-number');
+    case 'album-view-song-item':
+        return element.querySelector('.song-item-number');
+    case 'song-item-title':
+    case 'song-item-duration':
+        return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+    case 'song-item-number':
+        return element;
+    default:
+        return;
+    }
 };
 var clickHandler = function (targetElement) {
     var songItem = getSongItem(targetElement);
     if (currentlyPlayingSong === null) {
         songItem.innerHTML = pauseButtonTemplate;
         currentlyPlayingSong = songItem.getAttribute('data-song-number');
-   } else if(currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
-         songItem.innerHTML = playButtonTemplate;
-         currentlyPlayingSong = null;
-     //If the current playing song is not the song playing
- } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
+    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
+        songItem.innerHTML = playButtonTemplate;
+        currentlyPlayingSong = null;
+        //If the current playing song is not the song playing
+    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
         var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
         currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
         songItem.innerHTML = pauseButtonTemplate;
@@ -188,15 +223,15 @@ window.onload = function () {
     songListContainer.addEventListener('mouseover', function (event) {
 
         // Only target individual song rows during event delegation
-         if (event.target.parentElement.className === 'album-view-song-item') {
-            event.target.parentElement.querySelector('.song-item-number').innerHTML =                            playButtonTemplate;
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
             var songItem = getSongItem(event.target);
 
             if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
                 songItem.innerHTML = playButtonTemplate;
             }
-    }
-});
+        }
+    });
 
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function (event) {
@@ -207,14 +242,15 @@ window.onload = function () {
                 songItem.innerHTML = songItemNumber;
             }
         });
-    
+
         songRows[i].addEventListener('click', function (event) {
             // Event handler call
-          clickHandler(event.target);
-            // Store state of playing songs line 180
-          currentlyPlayingSong = null;
+            clickHandler(event.target);
+            //Store state of playing songs line 210
+            currentlyPlayingSong = null;
+
         });
-    
+
     }
     var albums = [albumPicasso, albumMarconi, albumCherrryBlossoms];
     var index = 1;
