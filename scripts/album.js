@@ -129,22 +129,21 @@ var setCurrentAlbum = function (album) {
  * of a specified className--- and we will pass it a  specific classname
  * 
  */
-var findParentByClassName = function (element, targetClass) {
+     var findParentByClassName = function (element, targetClass) {
     /** 
     Sets CheckParent variable and checks to see if a parent exists
     **/
-    var checkParent = element.parentElement;
-
-    if (!checkParent) {
+    var checkParentPass = element.parentElement;
+    if (!checkParentPass) {
         //if not we will stop execution and return
         return console.log("No parent found");
 
     }
-    var checkClass = element.parentElement.className;
+    var checkClassPass = element.parentElement.className;
     /** 
     Sets CheckClass variable and checks to see if a parent with the className exists
     **/
-    if (!checkClass) {
+    if (!checkClassPass) {
         //if no parent with that specified class name found stop execution and return
         return console.log("No parent found with that class name");
     }
@@ -252,6 +251,9 @@ window.onload = function () {
             // Event handler call
             clickHandler(event.target);
             // Store state of playing songs line 180
+            // Store state of playing songs
+            currentlyPlayingSong = null;
+
         });
     }
 
