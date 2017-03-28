@@ -131,7 +131,7 @@ var setCurrentAlbum = function (album) {
  */
 var findParentByClassName = function (element, targetClass) {
     /** 
-    Sets CheckParent variable and checks to see if a parent exists
+    Sets CheckParentPass variable and checks to see if a parent exists
     **/
     var checkParentPass = element.parentElement;
     if (!checkParentPass) {
@@ -139,10 +139,11 @@ var findParentByClassName = function (element, targetClass) {
         return console.log("No parent found");
 
     }
-    var checkClassPass = element.parentElement.className;
-    /** 
-    Sets CheckClass variable and checks to see if a parent with the className exists
+     /** 
+    Sets CheckClassPass variable and checks to see if a parent with the className exists
     **/
+    var checkClassPass = element.parentElement.className;
+   
     if (!checkClassPass) {
         //if no parent with that specified class name found stop execution and return
         return console.log("No parent found with that class name");
