@@ -93,6 +93,7 @@ var createSongRow = function (songNumber, songName, songLength) {
     var template =
     
         '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
+       var $row = $(template);
     var clickHandler = function () {
         var songNumber = $(this).attr('data-song-number');
 
@@ -110,6 +111,7 @@ var createSongRow = function (songNumber, songName, songLength) {
             $(this).html(playButtonTemplate);
             currentlyPlayingSong = null;
         }
+      
     };
 
     var onHover = function (event) {
