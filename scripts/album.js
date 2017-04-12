@@ -205,7 +205,7 @@ var togglePlayFromPlayerBar = function () {
         
 
 
-    } else if (currentSoundFile.play()) {
+    } else if (currentSoundFile) {
         $(this).html(playButtonTemplate);
         $('.main-controls .play-pause').html(playerBarPlayButton);
         currentSoundFile.pause();
