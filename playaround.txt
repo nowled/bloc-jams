@@ -1,0 +1,25 @@
+ 
+ 
+ if (currentlyPlayingSongNumber !== songNumber) {
+            // Switch from Play -> Pause button to indicate new song is playing.
+             setSong(songNumber);
+             currentSoundFile.play();
+            $(this).html(pauseButtonTemplate);
+           //  currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+            
+             updatePlayerBarSong();
+             
+               
+       }  else if(currentSoundFile.isPaused()) {
+                $(this).html(pauseButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPauseButton);
+                currentSoundFile.play();
+              // Update the Player Bar information
+             
+             
+         }else (currentSoundFile.play()){
+               $(this).html(playButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPlayButton);
+                currentSoundFile.pause();
+             
+         }
