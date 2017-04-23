@@ -13,6 +13,33 @@ var setSong = function (songNumber) {
     setVolume(currentVolume);
 
 };
+var setCurrentTimeInPlayerBar = function(currentTime){
+     
+      $currentTime = $('.current-time');
+     //current time updates with song playback.
+       $currentTime.text(filterTimeCode(currentTime));
+  };
+ var setTotalTimeInPlayerBar = function(totalTime){
+       
+     
+         $totalTime = $('.total-time .currently-playing');
+         $totalTime.text(filterTimeCode(totalTime));
+    
+        
+    };
+
+var filterTimeCode = function(timeInSeconds) {
+    console.log("Inside filterTimeCode")
+    //Use the parseFloat() method to get the seconds in number form.
+   var  seconds = parseFloat(Math.floor(timeInSeconds % 60));
+    var minutes = Math.floor(timeInSeconds / 60);
+      //ternary operator if seconds is less than 10 add a zero to seconds
+    //else keep the seconds as is
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    return minutes + ":" + seconds;
+};
+
+
 //Add a setVolume() function that takes one argument, a volume value, and wraps the Buzz setVolume() method with a conditional statement that checks to see if a  currentSoundFile exists:
 var seek = function (time) {
     if (currentSoundFile) {
@@ -35,7 +62,7 @@ var getSongNumberCell = function (number) {
 var createSongRow = function (songNumber, songName, songLength) {
     var template =
 
-        '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + songLength + '</td>' + '</tr>';
+        '<tr class="album-view-song-item">' + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' + '  <td class="song-item-title">' + songName + '</td>' + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>' + '</tr>';
 
     var $row = $(template);
 
@@ -55,7 +82,8 @@ var createSongRow = function (songNumber, songName, songLength) {
             setSong(songNumber);
             currentSoundFile.play();
             updateSeekBarWhileSongPlays();
-            $(this).html(pauseButtonTemplate);
+            
+           
             //  currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
             var $volumeFill = $('.volume .fill');
             var $volumeThumb = $('.volume .thumb');
@@ -63,7 +91,7 @@ var createSongRow = function (songNumber, songName, songLength) {
             $volumeThumb.css({
                 left: currentVolume + '%'
             });
-
+              $(this).html(pauseButtonTemplate);
             updatePlayerBarSong();
 
         } else if (currentlyPlayingSongNumber === songNumber) {
@@ -150,6 +178,7 @@ var updateSeekBarWhileSongPlays = function () {
             var $seekBar = $('.seek-control .seek-bar');
 
             updateSeekPercentage($seekBar, seekBarFillRatio);
+             setCurrentTimeInPlayerBar(this.getTime());
         });
     }
 };
@@ -201,6 +230,7 @@ var setupSeekBars = function () {
             var offsetX = event.pageX - $seekBar.offset().left;
             var barWidth = $seekBar.width();
             var seekBarFillRatio = offsetX / barWidth;
+            
             if ($seekBar.parent().attr('class') == 'seek-control') {
                 seek(seekBarFillRatio * currentSoundFile.getDuration());
             } else {
@@ -229,6 +259,7 @@ var updatePlayerBarSong = function () {
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+    setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
 };
 var nextSong = function () {
     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
@@ -306,6 +337,7 @@ var togglePlayFromPlayerBar = function () {
         $(this).html(playButtonTemplate);
         $('.main-controls .play-pause').html(playerBarPlayButton);
         currentSoundFile.pause();
+       
         $playSongNumberCell.html(playButtonTemplate);
 
 
