@@ -1,6 +1,6 @@
 var albumPicasso = {
      title: 'Pablo',
-     artist: 'Drake',
+     artist: 'Pablo',
      label: 'Good Music',
      year: '1881',
      albumArtUrl: 'assets/images/album_covers/01.png',

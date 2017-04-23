@@ -18,18 +18,21 @@ var setCurrentTimeInPlayerBar = function(currentTime){
       $currentTime = $('.current-time');
      //current time updates with song playback.
        $currentTime.text(filterTimeCode(currentTime));
+    
   };
+   
+
  var setTotalTimeInPlayerBar = function(totalTime){
        
      
-         $totalTime = $('.total-time .currently-playing');
+         $totalTime = $('.total-time');
          $totalTime.text(filterTimeCode(totalTime));
     
         
     };
 
 var filterTimeCode = function(timeInSeconds) {
-    console.log("Inside filterTimeCode")
+   
     //Use the parseFloat() method to get the seconds in number form.
    var  seconds = parseFloat(Math.floor(timeInSeconds % 60));
     var minutes = Math.floor(timeInSeconds / 60);
